@@ -20,24 +20,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(getAuthToken());
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [hideBalance, setHideBalance] = useState<boolean>(() => {
-    try {
-      return localStorage.getItem('standard_vtu_hide_balance') === 'true';
-    } catch {
-      return false;
-    }
-  });
+  const [hideBalance, setHideBalance] = useState<boolean>(false);
 
   const toggleHideBalance = () => {
-    setHideBalance(prev => {
-      const next = !prev;
-      try {
-        localStorage.setItem('standard_vtu_hide_balance', String(next));
-      } catch (e) {
-        // ignore localStorage errors
-      }
-      return next;
-    });
+    setHideBalance(prev => !prev);
   };
 
   const refreshUser = async () => {

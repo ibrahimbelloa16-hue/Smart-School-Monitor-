@@ -1,15 +1,18 @@
 export const API_BASE = '/api';
 
+// In-memory token storage (zero localStorage usage)
+let inMemoryToken: string | null = null;
+
 export function getAuthToken(): string | null {
-  return localStorage.getItem('datahub_token');
+  return inMemoryToken;
 }
 
 export function setAuthToken(token: string) {
-  localStorage.setItem('datahub_token', token);
+  inMemoryToken = token;
 }
 
 export function clearAuthToken() {
-  localStorage.removeItem('datahub_token');
+  inMemoryToken = null;
 }
 
 export async function apiRequest<T = any>(

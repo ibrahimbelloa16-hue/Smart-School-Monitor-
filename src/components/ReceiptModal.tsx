@@ -47,7 +47,9 @@ interface ReceiptModalProps {
     planName?: string;
     network?: string;
     recipientPhone?: string;
-    amountNaira: number;
+    amountNaira?: number;
+    airtimeAmount?: number;
+    amount?: number;
     status: string;
     providerReference?: string;
     providerError?: string;
@@ -63,12 +65,14 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ isOpen, onClose, dat
 
   if (!isOpen || !data) return null;
 
+  const rawAmount = data.amountNaira ?? (data as any).airtimeAmount ?? (data as any).face_value_naira ?? (data as any).amount;
+  const displayAmount = typeof rawAmount === 'number' && !isNaN(rawAmount) 
+    ? rawAmount 
+    : (parseFloat(String(rawAmount)) || 0);
+
   const displayMessage = sanitizeReceiptMessage(data.message);
   const displayProviderRef = sanitizeProviderReference(data.providerReference);
   const exactProviderError = data.providerError || (data.status?.toUpperCase() === 'FAILED' ? displayMessage : undefined);
-
-  const rawAmount = data.amountNaira ?? (data as any).airtimeAmount ?? (data as any).amount;
-  const computedAmount = (rawAmount !== undefined && !isNaN(Number(rawAmount))) ? Number(rawAmount) : 0;
 
   const copyReference = () => {
     navigator.clipboard.writeText(data.reference);
@@ -78,7 +82,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ isOpen, onClose, dat
   };
 
   const copyFullReceipt = () => {
-    const text = `STANDARD DATAHUB VTU RECEIPT\nReference: ${data.reference}\nProduct: ${data.planName || data.productType || 'VTU Recharge'}\nNetwork: ${data.network || 'N/A'}\nRecipient: ${data.recipientPhone || 'N/A'}\nAmount: ${formatNaira(computedAmount)}\nStatus: ${data.status.toUpperCase()}${exactProviderError ? `\nProvider Error: ${exactProviderError}` : ''}\nProvider Ref: ${displayProviderRef || 'N/A'}\nDate: ${formatDate(data.createdAt || new Date().toISOString())}`;
+    const text = `STANDARD DATAHUB VTU RECEIPT\nReference: ${data.reference}\nProduct: ${data.planName || data.productType || 'VTU Recharge'}\nNetwork: ${data.network || 'N/A'}\nRecipient: ${data.recipientPhone || 'N/A'}\nAmount: ${formatNaira(displayAmount)}\nStatus: ${data.status.toUpperCase()}${exactProviderError ? `\nProvider Error: ${exactProviderError}` : ''}\nProvider Ref: ${displayProviderRef || 'N/A'}\nDate: ${formatDate(data.createdAt || new Date().toISOString())}`;
     navigator.clipboard.writeText(text);
     showToast('Full receipt details copied!', 'success');
   };
@@ -86,7 +90,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ isOpen, onClose, dat
   const normalizedStatus = (data.status || '').toUpperCase();
   const isSuccess = normalizedStatus === 'SUCCESS' || normalizedStatus === 'SUCCESSFUL';
   const isPending = normalizedStatus === 'PENDING' || normalizedStatus === 'PROCESSING';
-  const isRefunded = normalizedStatus === 'REFUNDED' || normalizedStatus === 'FAILED_REFUNDED' || Boolean(data.refunded);
+  const isRefunded = normalizedStatus === 'REFUNDED' || Boolean(data.refunded);
   const isFailed = normalizedStatus === 'FAILED' || (!isSuccess && !isPending);
 
   return (
@@ -132,7 +136,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ isOpen, onClose, dat
           </h3>
 
           <div className="text-2xl font-black text-white mt-1">
-            {formatNaira(computedAmount)}
+            {formatNaira(displayAmount)}
           </div>
 
           <p className="text-xs text-slate-400 mt-1 max-w-[260px] mx-auto leading-relaxed">
@@ -152,7 +156,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ isOpen, onClose, dat
               <span>Full Refund Credited</span>
             </div>
             <p className="text-xs text-emerald-200/90 leading-relaxed">
-              Service temporarily unavailable. <span className="font-bold text-white">{formatNaira(data.amountNaira)}</span> has been automatically refunded to your wallet balance.
+              Service temporarily unavailable. <span className="font-bold text-white">{formatNaira(displayAmount)}</span> has been automatically refunded to your wallet balance.
             </p>
           </div>
         )}
@@ -239,7 +243,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ isOpen, onClose, dat
         {/* WhatsApp Support Button */}
         <div className="mb-4">
           <a
-            href={`https://wa.me/2348161720895?text=${encodeURIComponent(`Hello Standard DataHub Support, I need assistance with transaction ref: ${data.reference} (${data.planName || data.productType || 'Recharge'} - ₦${data.amountNaira})`)}`}
+            href={`https://wa.me/2348161720895?text=${encodeURIComponent(`Hello Standard DataHub Support, I need assistance with transaction ref: ${data.reference} (${data.planName || data.productType || 'Recharge'} - ₦${displayAmount})`)}`}
             target="_blank"
             rel="noreferrer"
             className="w-full py-2.5 px-4 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 font-bold text-xs flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"

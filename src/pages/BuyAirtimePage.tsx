@@ -137,11 +137,11 @@ export const BuyAirtimePage: React.FC<BuyAirtimePageProps> = ({ setCurrentTab })
 
       setReceiptData({
         ...response,
-        amountNaira: Number(response.amountNaira ?? response.airtimeAmount ?? numericAmount),
-        productType: 'airtime',
-        planName: response.planName || `₦${Number(numericAmount).toLocaleString()} ${selectedNetwork} Airtime`,
+        amountNaira: response.amountNaira ?? response.airtimeAmount ?? numericAmount,
         network: response.network || selectedNetwork,
-        recipientPhone: response.recipientPhone || recipientPhone
+        recipientPhone: response.recipientPhone || recipientPhone,
+        planName: response.planName || `${selectedNetwork} ₦${numericAmount.toLocaleString()} Airtime`,
+        productType: 'Airtime'
       });
       setIsReceiptModalOpen(true);
 
