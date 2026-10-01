@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Standard DataHub - Mobile Data & Airtime VTU</title>
+    <meta name="description" content="Fast, reliable Nigerian VTU portal for instant mobile data bundles, airtime top-up, and manual wallet funding." />
+    
+    <!-- PWA & Mobile Web App Meta Tags -->
+    <meta name="theme-color" content="#090d16" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="DataHub" />
+    <meta name="application-name" content="Standard DataHub" />
+
+    <!-- Open Graph & Social -->
+    <meta property="og:title" content="Standard DataHub - Mobile Data & Airtime VTU" />
+    <meta property="og:description" content="Fast, reliable Nigerian VTU portal for instant mobile data bundles, airtime top-up, and manual wallet funding." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Icons & Manifest -->
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/pwa-512x512.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Immediate Global beforeinstallprompt Capture -->
+    <script>
+      // Capture the beforeinstallprompt event as early as possible so it is never missed by late React hydration
+      window.deferredPWAInstallPrompt = null;
+      window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        window.deferredPWAInstallPrompt = e;
+        console.log('[PWA] Early beforeinstallprompt event captured and preserved.');
+        // Dispatch custom event in case React listener attaches afterwards
+        window.dispatchEvent(new CustomEvent('pwa-prompt-available'));
+      });
+      window.addEventListener('appinstalled', function() {
+        window.deferredPWAInstallPrompt = null;
+        console.log('[PWA] Application was installed on device home screen.');
+        window.dispatchEvent(new CustomEvent('pwa-app-installed'));
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Register service worker if supported
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js').then(function(reg) {
+            console.log('[PWA] Service Worker registered successfully with scope:', reg.scope);
+          }).catch(function(err) {
+            console.warn('[PWA] Service Worker registration failed:', err);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "DataHub - Mobile Data & Airtime VTU",
+  "description": "Fast, reliable Nigerian VTU portal for instant mobile data bundles, airtime top-up, and manual wallet funding.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

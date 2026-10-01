@@ -1,0 +1,98 @@
+{
+  "user": {
+    "id": "usr_001",
+    "name": "Ibrahim Mal",
+    "email": "ibrahimmal916@gmail.com",
+    "phone": "08123456789",
+    "walletBalance": 7401,
+    "referralCode": "DH-7789",
+    "virtualAccounts": [
+      {
+        "bankName": "Moniepoint MFB",
+        "accountNumber": "8123456789",
+        "accountName": "DataHub / Ibrahim Mal"
+      },
+      {
+        "bankName": "Wema Bank",
+        "accountNumber": "7829104432",
+        "accountName": "DataHub / Ibrahim Mal"
+      },
+      {
+        "bankName": "Palmpay",
+        "accountNumber": "9012345678",
+        "accountName": "DataHub / Ibrahim Mal"
+      }
+    ]
+  },
+  "transactions": [
+    {
+      "id": "DH-TX-74614",
+      "type": "AIRTIME",
+      "network": "MTN",
+      "networkCode": "01",
+      "recipient": "08031234567",
+      "faceValue": 100,
+      "amountDeducted": 99,
+      "discount": 1,
+      "status": "SUCCESS",
+      "reference": "DH_AIR_1790322630042_452",
+      "providerResponse": "Simulated Order Received: statuscode 100",
+      "timestamp": "2026-09-25T07:50:30.042Z"
+    },
+    {
+      "id": "DH-TX-73678",
+      "type": "AIRTIME",
+      "network": "MTN",
+      "networkCode": "01",
+      "recipient": "08031234567",
+      "faceValue": 100,
+      "amountDeducted": 0,
+      "discount": 0,
+      "status": "FAILED",
+      "reference": "DH_AIR_1790322625946_338",
+      "providerResponse": "{\"status\":\"THIS_SERVICE_IS_TEMPORARY_UNAVAILABLE\"}",
+      "timestamp": "2026-09-25T07:50:26.490Z"
+    },
+    {
+      "id": "DH-TX-10928",
+      "type": "AIRTIME",
+      "network": "MTN",
+      "networkCode": "01",
+      "recipient": "08031234567",
+      "faceValue": 1000,
+      "amountDeducted": 990,
+      "discount": 10,
+      "status": "SUCCESS",
+      "reference": "DH_AIR_1727221001_842",
+      "providerResponse": "ORDER_RECEIVED: Statuscode 100",
+      "timestamp": "2026-09-25T05:50:22.825Z"
+    },
+    {
+      "id": "DH-TX-10927",
+      "type": "DATA",
+      "network": "AIRTEL",
+      "networkCode": "04",
+      "planName": "Airtel 2.0GB Corporate Gifting",
+      "recipient": "09012345678",
+      "faceValue": 580,
+      "amountDeducted": 580,
+      "discount": 0,
+      "status": "SUCCESS",
+      "reference": "DH_DAT_1727218900_319",
+      "providerResponse": "ORDER_RECEIVED: Statuscode 100",
+      "timestamp": "2026-09-25T02:50:22.825Z"
+    },
+    {
+      "id": "DH-TX-10926",
+      "type": "WALLET_FUNDING",
+      "recipient": "Wallet Top-Up",
+      "faceValue": 5000,
+      "amountDeducted": -5000,
+      "status": "SUCCESS",
+      "reference": "FUND_MONIEPOINT_8921",
+      "providerResponse": "Direct Transfer Verified",
+      "timestamp": "2026-09-24T07:50:22.825Z"
+    }
+  ],
+  "simulationMode": false
+}
